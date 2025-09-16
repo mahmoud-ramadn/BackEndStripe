@@ -84,7 +84,15 @@ async function storeItemsInDatabase(items) {
   return orderId;
 }
 
-// For Vercel, we need to export the app
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+    message: "Backend is running",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 module.exports = app;
 
 // Only listen when running locally (not on Vercel)
