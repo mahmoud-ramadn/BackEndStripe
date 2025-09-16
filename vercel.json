@@ -2,14 +2,24 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/index.js",
+      "src": "api/create-checkout-session.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/health.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "/api/index.js"
+      "src": "/create-checkout-session",
+      "dest": "/api/create-checkout-session.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/health",
+      "dest": "/api/health.js",
+      "methods": ["GET"]
     }
   ]
 }

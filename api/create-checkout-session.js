@@ -13,7 +13,7 @@ async function storeItemsInDatabase(items) {
 }
 
 module.exports = async (req, res) => {
-  // Set CORS headers for all requests
+  // Set CORS headers
   res.setHeader("Access-Control-Allow-Origin", "https://furniro-livid.vercel.app");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
@@ -25,6 +25,7 @@ module.exports = async (req, res) => {
     return;
   }
 
+  // Only allow POST requests
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method not allowed" });
     return;
