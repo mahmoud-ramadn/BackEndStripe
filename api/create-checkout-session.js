@@ -13,7 +13,7 @@ async function storeItemsInDatabase(items) {
 }
 
 module.exports = async (req, res) => {
-  // Set CORS headers
+  // Set CORS headers for all requests
   const allowedOrigins = [
     "https://furniro-livid.vercel.app",
     "http://localhost:5173",
@@ -25,16 +25,23 @@ module.exports = async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", origin);
   }
 
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Max-Age", "86400"); // 24 hours
-
-  // Handle preflight requests
+  // For preflight requests
   if (req.method === "OPTIONS") {
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization"
+    );
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Max-Age", "86400"); // 24 hours
     res.status(200).end();
     return;
   }
+
+  // Set headers for actual requests
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
 
   // Only allow POST requests
   if (req.method !== "POST") {

@@ -16,6 +16,10 @@
     {
       "src": "api/debug.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "api/cors-test.js",
+      "use": "@vercel/node"
     }
   ]
 }
