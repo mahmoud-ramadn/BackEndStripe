@@ -9,7 +9,17 @@ dotenv.config();
 const app = express();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-app.use(cors());
+// Configure CORS to allow requests from your frontend
+app.use(
+  cors({
+    origin: [
+      "https://furniro-livid.vercel.app",
+      "http://localhost:3000",
+      "http://localhost:5173",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
@@ -21,8 +31,12 @@ app.post("/create-checkout-session", async (req, res) => {
       throw new Error("Invalid items data");
     }
 
+    // Store the items in the database and get an order ID
+    const orderId = await storeItemsInDatabase(items);
+
     const lineItems = items.map((item) => {
       const { name, discountedPrice, quantity, images } = item;
+
       if (!name || !discountedPrice || !quantity || !images) {
         throw new Error("Missing item properties");
       }
@@ -34,7 +48,7 @@ app.post("/create-checkout-session", async (req, res) => {
           unit_amount: Math.round(discountedPrice * 100),
           product_data: {
             name,
-            images,
+            images: [images[0]], // Send only one image
           },
         },
       };
@@ -48,7 +62,7 @@ app.post("/create-checkout-session", async (req, res) => {
         "https://furniro-livid.vercel.app/Success?session_id={CHECKOUT_SESSION_ID}",
       cancel_url: "https://furniro-livid.vercel.app/cancel",
       metadata: {
-        items: JSON.stringify(items),
+        orderId, // Save only the orderId reference instead of full item data
       },
     });
 
@@ -63,7 +77,20 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 5002;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Example function for storing items in the database
+async function storeItemsInDatabase(items) {
+  // Save items to your database (e.g., MongoDB, PostgreSQL) and return the orderId
+  const orderId = "unique-order-id"; // Replace with your actual logic
+  return orderId;
+}
+
+// For Vercel, we need to export the app
+module.exports = app;
+
+// Only listen when running locally (not on Vercel)
+if (require.main === module) {
+  const PORT = process.env.PORT || 5002;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
