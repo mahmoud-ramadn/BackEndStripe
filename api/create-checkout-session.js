@@ -14,9 +14,20 @@ async function storeItemsInDatabase(items) {
 
 module.exports = async (req, res) => {
   // Set CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "https://furniro-livid.vercel.app");
+  const allowedOrigins = [
+    "https://furniro-livid.vercel.app",
+    "http://localhost:5173",
+    "http://localhost:3000",
+  ];
+
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Max-Age", "86400"); // 24 hours
 
   // Handle preflight requests
