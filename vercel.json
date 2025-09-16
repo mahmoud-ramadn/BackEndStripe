@@ -1,25 +1,46 @@
 {
   "version": 2,
-  "builds": [
+  "functions": {
+    "api/create-checkout-session.js": {
+      "runtime": "@vercel/node@2.0.0"
+    },
+    "api/health.js": {
+      "runtime": "@vercel/node@2.0.0"
+    },
+    "api/test.js": {
+      "runtime": "@vercel/node@2.0.0"
+    },
+    "api/debug.js": {
+      "runtime": "@vercel/node@2.0.0"
+    },
+    "api/cors-test.js": {
+      "runtime": "@vercel/node@2.0.0"
+    }
+  },
+  "routes": [
     {
-      "src": "api/create-checkout-session.js",
-      "use": "@vercel/node"
+      "src": "/api/create-checkout-session",
+      "dest": "/api/create-checkout-session.js"
     },
     {
-      "src": "api/health.js",
-      "use": "@vercel/node"
+      "src": "/api/health",
+      "dest": "/api/health.js"
     },
     {
-      "src": "api/test.js",
-      "use": "@vercel/node"
+      "src": "/api/test",
+      "dest": "/api/test.js"
     },
     {
-      "src": "api/debug.js",
-      "use": "@vercel/node"
+      "src": "/api/debug",
+      "dest": "/api/debug.js"
     },
     {
-      "src": "api/cors-test.js",
-      "use": "@vercel/node"
+      "src": "/api/cors-test",
+      "dest": "/api/cors-test.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.js"
     }
   ]
 }
