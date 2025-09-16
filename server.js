@@ -23,6 +23,14 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+// Simple test endpoint
+app.get("/", (req, res) => {
+  res.json({
+    message: "Backend is running",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 app.post("/create-checkout-session", async (req, res) => {
   try {
     const { items } = req.body;
