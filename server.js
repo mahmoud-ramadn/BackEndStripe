@@ -26,7 +26,15 @@ app.use(cookieParser());
 // Simple test endpoint
 app.get("/", (req, res) => {
   res.json({
-    message: "Backend is running",
+    message: "Backend is running - root endpoint",
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// Test endpoint
+app.get("/test", (req, res) => {
+  res.json({
+    message: "Backend is running - test endpoint",
     timestamp: new Date().toISOString(),
   });
 });
